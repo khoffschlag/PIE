@@ -1,0 +1,2 @@
+# PIE
+Plot inequalities easily
