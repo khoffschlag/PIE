@@ -1,31 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.ticker as ticker
 
 
-def plot_equations_3D(equations, domain=(0, 15), plot_intersection_only=False, save_fig=None):
+def plot_equations_3D(equations, domain=(0, 15), resolution=1, plot_intersection_only=False, save_fig=None):
 
     """
-    Plot (multiple) equations
+    Plot approximations of (multiple) equations
 
     Args:
         equations (list): A list of functions that take three arguments (x, y, z) and return a boolean value.
                           If you want to connect multiple conditions in one equation - use & instead of 'and' and
                           | instead of 'or'. This is needed, because x,y and z are going to be numpy matrices!
-        domain (tuple): A tuple specifying a range [a,b] of the x, y, and z values to evaluate the inequalities on.
-                        The stepsize is 1.
-                        CAUTION: The specified range has to be in R+ (no negative numbers)
+        domain (tuple): A tuple specifying a range [a,b] of the x, y, and z values to evaluate the functions on.
+                        CAUTION: a and b have to be greater than 0!!!
+        resolution (int): With the default resolution of 1 and a domain range of [a,b] (b-a)+1 values will be calculated
+                          and plotted. If you want to have k times the amount, set resolution to k.
+                          Example: If you specify a domain of (0,10) this method with resolution=1 would calculate
+                          11 evenly spaced values for x, y and z. These values would be
+                          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].
+                          With resolution=2 we would double the amount of evenly spaced calculated values
+                          in the range [a,b].
         plot_intersection_only (bool): Whether to only plot the intersecting region. Otherwise, plot all inequalities.
         save_fig (str): If you want to save the generated plot, specify a path to the location where it should be saved
     """
+
+    # For the case that a user just wanted to plot one equation and forgot to put it into a list
+    if not isinstance(equations, list):
+        equations = [equations]
+
+    if domain[0] < 0 or domain[1] < 0:
+        raise ValueError('The domain specifies a range [a,b] where a and b has to be greater than 0!'
+                         + 'You have specified a domain with also negative value(s)')
 
     # Create a meshgrid that covers the specified domain.
     # The meshgrid is used to create a grid of points in the three-dimensional space that will be used to evaluate
     # the equations.
     x, y, z = np.meshgrid(
-        np.linspace(domain[0], domain[1], domain[1]-domain[0]),
-        np.linspace(domain[0], domain[1], domain[1]-domain[0]),
-        np.linspace(domain[0], domain[1], domain[1]-domain[0]),
+        np.linspace(domain[0], domain[1], resolution*((domain[1]-domain[0])+1)),
+        np.linspace(domain[0], domain[1], resolution*((domain[1]-domain[0])+1)),
+        np.linspace(domain[0], domain[1], resolution*((domain[1]-domain[0])+1)),
         indexing='ij'
     )
 
@@ -60,7 +75,7 @@ def plot_equations_3D(equations, domain=(0, 15), plot_intersection_only=False, s
 
     # Plotting stuff
     ax = plt.figure().add_subplot(projection='3d')
-    ax.set_aspect('auto')
+    ax.set_aspect('equal')
 
     if plot_intersection_only:
         ax.voxels(intersection, facecolors=colors)
@@ -70,9 +85,13 @@ def plot_equations_3D(equations, domain=(0, 15), plot_intersection_only=False, s
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.set_xlim([domain[0], domain[1]])
-    ax.set_ylim([domain[0], domain[1]])
-    ax.set_zlim([domain[0], domain[1]])
-    plt.show()
+
+    ticks = ticker.FuncFormatter(lambda x, pos: '{0:g}'.format(x / resolution))
+    ax.xaxis.set_major_formatter(ticks)
+    ax.yaxis.set_major_formatter(ticks)
+    ax.zaxis.set_major_formatter(ticks)
+
     if save_fig is not None:
         plt.savefig(save_fig)
+
+    plt.show()
