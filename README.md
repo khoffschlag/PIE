@@ -40,4 +40,4 @@ Please note that the created virtual environment needs to be activated in the te
 If you opened a new terminal, you may have to go into the PIE directory and run the source command from the installation
 process again.
 
-**To see PIE in action, see: https://github.com/khoffschlag/PIE/examples/basic_examples.ipynb**
+**To see PIE in action, see: https://github.com/khoffschlag/PIE/blob/main/examples/basic_examples.ipynb**
