@@ -1,4 +1,4 @@
-from PIE import plot_algebraic_problem_3D
+from PIE.plotter import plot_algebraic_problem_3D
 
 if __name__ == '__main__':
     def expr_1(x, y, z):
