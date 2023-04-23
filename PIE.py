@@ -25,6 +25,7 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
                           in the range [a,b].
         plot_intersection_only (bool): Whether to only plot the intersecting region. Otherwise, plot all inequalities.
         save_fig (str): If you want to save the generated plot, specify a path to the location where it should be saved
+        hide_ticks (bool): If true, hide ticks on the axis.
         view_init (tuple): Tuple containing two numbers. Is used to set the viewing angle of a 3D plot in Matplotlib.
                            The first value of the tuple is the elev parameter which specifies the elevation angle
                            (i.e., the angle above the xy-plane) in degrees, while the second value specifies the
@@ -92,10 +93,15 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
 
-    ticks = ticker.FuncFormatter(lambda x, pos: '{0:g}'.format(x / resolution))
-    ax.xaxis.set_major_formatter(ticks)
-    ax.yaxis.set_major_formatter(ticks)
-    ax.zaxis.set_major_formatter(ticks)
+    if hide_ticks:
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+    else:
+        ticks = ticker.FuncFormatter(lambda x, pos: '{0:g}'.format(x / resolution))
+        ax.xaxis.set_major_formatter(ticks)
+        ax.yaxis.set_major_formatter(ticks)
+        ax.zaxis.set_major_formatter(ticks)
 
     if save_fig is not None:
         plt.savefig(save_fig)
