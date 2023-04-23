@@ -4,13 +4,13 @@ import matplotlib.colors as mcolors
 import matplotlib.ticker as ticker
 
 
-def plot_equations_3D(equations, domain=(0, 15), resolution=1, plot_intersection_only=False, save_fig=None):
+def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_intersection_only=False, save_fig=None):
 
     """
     Plot approximations of (multiple) equations
 
     Args:
-        equations (list): A list of functions that take three arguments (x, y, z) and return a boolean value.
+        expressions (list): A list of functions that take three arguments (x, y, z) and return a boolean value.
                           If you want to connect multiple conditions in one equation - use & instead of 'and' and
                           | instead of 'or'. This is needed, because x,y and z are going to be numpy matrices!
         domain (tuple): A tuple specifying a range [a,b] of the x, y, and z values to evaluate the functions on.
@@ -27,8 +27,8 @@ def plot_equations_3D(equations, domain=(0, 15), resolution=1, plot_intersection
     """
 
     # For the case that a user just wanted to plot one equation and forgot to put it into a list
-    if not isinstance(equations, list):
-        equations = [equations]
+    if not isinstance(expressions, list):
+        expressions = [expressions]
 
     if domain[0] < 0 or domain[1] < 0:
         raise ValueError('The domain specifies a range [a,b] where a and b has to be greater than 0!'
@@ -57,7 +57,7 @@ def plot_equations_3D(equations, domain=(0, 15), resolution=1, plot_intersection
     # iteratively we add the regions of the equations to the union matrix
     union = np.zeros_like(x)
 
-    for i, func in enumerate(equations):
+    for i, func in enumerate(expressions):
         # func_result is a matrix containing the results for all the possible defined combinations of x, y and z
         func_result = func(x, y, z)
 
