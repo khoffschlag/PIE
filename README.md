@@ -5,7 +5,8 @@ PIE is a Python module that allows you to plot inequalities and equations as wel
 **To see PIE in action, see: https://github.com/khoffschlag/PIE/blob/main/examples/basic_examples.ipynb**
 
 **Please note that PIE can currently only plot in the
-first quadrant where the x/y/z-axis values are greater than or equal to zero.**
+first quadrant where the x/y/z-axis values are greater than or equal to zero.
+Also are the generated plots are only approximations and maybe slightly misaligned.**
 
 ## Installation
 
