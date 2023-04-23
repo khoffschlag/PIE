@@ -31,9 +31,9 @@ Activate the virtual environment usin:
 > source env/bin/activate
 
 
-Install the required packages using pip:
+Install PIE using:
 
-> pip install -r requirements.txt
+> pip install .
 
 
 After installing the packages and activating the virtual environment, you can run the scripts or use the module,
