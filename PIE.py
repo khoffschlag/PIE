@@ -4,7 +4,8 @@ import matplotlib.colors as mcolors
 import matplotlib.ticker as ticker
 
 
-def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_intersection_only=False, save_fig=None):
+def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_intersection_only=False, save_fig=None,
+                              hide_ticks=False, view_init=(30, -60)):
 
     """
     Plot approximations of (multiple) equations
@@ -24,6 +25,10 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
                           in the range [a,b].
         plot_intersection_only (bool): Whether to only plot the intersecting region. Otherwise, plot all inequalities.
         save_fig (str): If you want to save the generated plot, specify a path to the location where it should be saved
+        view_init (tuple): Tuple containing two numbers. Is used to set the viewing angle of a 3D plot in Matplotlib.
+                           The first value of the tuple is the elev parameter which specifies the elevation angle
+                           (i.e., the angle above the xy-plane) in degrees, while the second value specifies the
+                           azimuth angle (i.e., the angle around the z-axis) in degrees.
     """
 
     # For the case that a user just wanted to plot one equation and forgot to put it into a list
@@ -82,6 +87,7 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
     else:
         ax.voxels(union, facecolors=colors)
 
+    ax.view_init(elev=view_init[0], azim=view_init[1])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
