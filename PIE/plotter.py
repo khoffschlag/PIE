@@ -81,7 +81,7 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
 
     # Plotting stuff
     ax = plt.figure().add_subplot(projection='3d')
-    ax.set_aspect('equal')
+    ax.set_proj_type('ortho')
 
     if plot_intersection_only:
         ax.voxels(intersection, facecolors=colors)
@@ -92,6 +92,10 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+    ax.set_box_aspect((1, 1, 1))
+    ax.set_xlim([0, union.shape[0]])
+    ax.set_ylim([0, union.shape[1]])
+    ax.set_zlim([0, union.shape[2]])
 
     if hide_ticks:
         ax.set_xticks([])
