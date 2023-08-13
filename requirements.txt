@@ -1,4 +1,4 @@
 plotly
-jupyterlab
+notebook
 numpy
 matplotlib
