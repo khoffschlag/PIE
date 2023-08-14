@@ -1,4 +1,4 @@
-plotly
+k3d
 notebook
 numpy
 matplotlib
