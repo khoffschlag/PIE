@@ -30,6 +30,10 @@ Activate the virtual environment usin:
 
 > source env/bin/activate
 
+Install the requirements using
+
+> pip install -r requirements.txt
+
 
 Install PIE using:
 
