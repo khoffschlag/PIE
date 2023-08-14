@@ -1,9 +1,10 @@
 import numpy as np
 import k3d
+import random
 
 
 def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_intersection_only=False,
-                              possible_colors=None, intersection_color=None, outlines=False):
+                              colors=None, intersection_color=None, outlines=False, only_random_colors=False):
 
     """
     Plot approximations of (multiple) equations using k3d library.
@@ -13,10 +14,14 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
         domain (tuple): A tuple specifying a range [a,b] of the x, y, and z values to evaluate the functions on.
         resolution (int): Resolution factor for calculating the meshgrid.
         plot_intersection_only (bool): Whether to only plot the intersecting region. Otherwise, plot all inequalities.
-        possible_colors (list): Hex-colors that are used to color the areas. If None, use default colors.
+        colors (list): Hex-colors that are used to color the areas.
+                       Use first color for first area, second color for second area etc.
+                       If None, use default colors.
+                       If colors list contain fewer colors than there are expressions, random colors will be generated.
         intersection_color (int): Hex-color that is used for the intersection.
                                   Do not include this color in possible_colors!
                                   If None, use default red for intersection.
+        only_random_colors (bool): If set to True, use random colors (except for intersection)
         outlines (bool): Set to True if you want to see the outlines per default.
     """
 
@@ -34,8 +39,8 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
         indexing='ij'
     )
 
-    if possible_colors is None:
-        possible_colors = [
+    if colors is None:
+        colors = [
             0x6A8A82,  # (Sage Green)
             0x3E4095,  # (Royal Blue)
             0xFFD700,  # (Gold)
@@ -46,8 +51,17 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
             0x00A86B,  # (Emerald Green)
             0xF4A460,  # (Sandy Brown)
         ]
+
+    if only_random_colors:
+        colors = []
+
+    delta_c = len(colors) - len(expressions) # if negative -> need to add more colors
+    while delta_c < 0:
+        colors.append(int(hex(random.randrange(0, 2**24)), 16))
+        delta_c += 1
+
     if intersection_color is None:
-        red_color = 0xA93C3E  # (Deep Red)
+        intersection_color = 0xA93C3E  # (Deep Red)
 
     intersection = np.ones_like(x, dtype=bool)
     union = np.zeros_like(x, dtype=bool)
@@ -70,7 +84,7 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
             mat = distinct_areas[i]
             mat[intersection] = False
             plot_name = 'Expr #' + str(i+1)
-            plot += k3d.voxels(mat.astype(np.uint8), color_map=possible_colors[i], outlines=False, name=plot_name)
+            plot += k3d.voxels(mat.astype(np.uint8), color_map=colors[i], outlines=outlines, name=plot_name)
 
-    plot += k3d.voxels(intersection.astype(np.uint8), color_map=intersection_color, outlines=False, name='Intersecton')
+    plot += k3d.voxels(intersection.astype(np.uint8), color_map=intersection_color, outlines=outlines, name='Intersection')
     plot.display()
