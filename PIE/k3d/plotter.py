@@ -69,7 +69,7 @@ def plot_algebraic_problem_3D(expressions, domain=(0, 15), resolution=1, plot_in
         for i in range(len(distinct_areas)):
             mat = distinct_areas[i]
             mat[intersection] = False
-            plot_name = 'Expr #' + str(i)
+            plot_name = 'Expr #' + str(i+1)
             plot += k3d.voxels(mat.astype(np.uint8), color_map=possible_colors[i], outlines=False, name=plot_name)
 
     plot += k3d.voxels(intersection.astype(np.uint8), color_map=intersection_color, outlines=False, name='Intersecton')
